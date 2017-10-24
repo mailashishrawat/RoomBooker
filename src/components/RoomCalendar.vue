@@ -13,10 +13,9 @@
 
   <div id="createBookingevent">
 Create a new event from
+<create-event> </create-event>
 <span> Start date</span>
-<!--<vue-timepicker :time-value.sync="myTime" :minute-interval="30"></vue-timepicker>-->
-<span> End date</span>
-<!--<vue-timepicker></vue-timepicker>-->
+
   </div>
   </div>
   </div>
@@ -24,18 +23,15 @@ Create a new event from
 
 <script>
 import $ from "jquery";
+
 var path = require("path");
 import moment from "moment";
 import fullCalendar from "fullcalendar/dist/fullcalendar.js";
-// import 
-/*import VueTimepicker from 'vue2-timepicker'
-new Vue({
-  components: {VueTimepicker},
+import CreateEvent from "./CreateEvent";
 
-});*/
 export default {
   name: "RoomCalendar",
-  // component:({fullcalendar}),
+  components: { CreateEvent },
   props: {
     editable: {
       type: Boolean,
@@ -52,7 +48,7 @@ export default {
   data() {
     return {
       msg: "Welcome to Calendar",
-      myTime:'',
+  
       items: [
         {
           title: "first event"
