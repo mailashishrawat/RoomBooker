@@ -13,7 +13,7 @@
 
   <div id="createBookingevent">
 Create a new event from
-<create-event> </create-event>
+<create-event @ondonebuttonclicked="alertValue"> </create-event>
 <span> Start date</span>
 
   </div>
@@ -48,15 +48,6 @@ export default {
   data() {
     return {
       msg: "Welcome to Calendar",
-  
-      items: [
-        {
-          title: "first event"
-        },
-        {
-          title: "Second event"
-        }
-      ],
       events: [
         {
           id: 1,
@@ -110,6 +101,10 @@ export default {
 
     eventCreated(...test) {
       console.log(test);
+    },
+    alertValue(value)
+    {alert("on parent : "+value);
+
     }
   },
   mounted: function() {
