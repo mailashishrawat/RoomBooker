@@ -1,16 +1,15 @@
 <template>
   <div class="hello">
-
-    <h2>Booking Details</h2>
+    <h2>Book room on {{dateclickedformatted}}</h2>
   <div class="container">
     <label>Reason</label>
     <textarea placeholder="Enter booking details" name="desc"  v-model="newEvent.title"></textarea><br>
     All Day <input  v-on:click="onalldayclick" type="checkbox" v-model="newEvent.allday"> <br>
-    <label v-if="!newEvent.allday"> Start Time </label>
+    <label v-if="!newEvent.allday">From  </label>
   <vue-timepicker v-if="!newEvent.allday" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newStartTime"></vue-timepicker><br>
-    <label v-if="!newEvent.allday"> End Time</label>
+    <label v-if="!newEvent.allday"> To </label>
     <vue-timepicker  v-if="!newEvent.allday" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newEndTime"></vue-timepicker><br>
-    <button  v-on:click="createnewevent" type="submit">Book Room</button>
+    <button  v-on:click="greet" type="submit">Book Room</button>
   </div>
   </div>
 </template>
@@ -29,6 +28,7 @@ export default {
         timeformat: "hh:mm A",
         leastcount: 15
       },
+     
       newEvent: {
         title: "new Booking",
         allday: false,
@@ -51,8 +51,12 @@ export default {
       }
     };
   },
+    props: ['dateclicked'],
   computed:{ 
-
+dateclickedformatted:function()
+{
+  return new moment(this.dateclicked).format("DD:MMM");
+}
   },
   methods: {
     getCurrentFormattedDate() {
@@ -70,7 +74,7 @@ export default {
       console.log(event.data);
     },
     greet() {
-      alert("hi");
+      alert(this.dateclicked);
     }
   },
   watch: {

@@ -10,10 +10,8 @@
     </li>
       </ul>
 
-  <div  v-if="showbooking" id="createBookingevent">
-Create a new event from
-<create-event @ondonebuttonclicked="alertValue"> </create-event>
-<span> Start date</span>
+  <div  id="createBookingevent">   
+<create-event @ondonebuttonclicked="alertValue"  :dateclicked="dateclicked"> </create-event>
 
   </div>
   </div>
@@ -48,6 +46,7 @@ export default {
     return {
        showbooking:false,
        selected:{},
+       dateclicked:moment(),
       msg: "Welcome to Calendar",
       events: [
         {
@@ -98,7 +97,8 @@ export default {
     dayclick(date, jsEvent, view)
     {
       this.showbooking=!this.showbooking;
-      alert (date);
+      this.dateclicked=date;
+     alert(this.dateclicked);
     },
     formateddate(item)
     {
