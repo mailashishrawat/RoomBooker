@@ -1,7 +1,8 @@
 <template>
   <div class="hello">
-    <h1>{{ selected }}</h1>
-  <full-calendar id='calendar' @day-click="dayclick" @testevent="alertValue" ref="calendar" :events="events" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"  :defaultView="config.defaultView"></full-calendar>
+    <h1>{{ msg }}</h1>
+ 
+  <div @testevent="alertValue" id='calendar'>Calendar </div>
   <div id="sidepane">
     Second pane
     <ul id="calevents">
@@ -10,7 +11,7 @@
     </li>
       </ul>
 
-  <div  v-if="showbooking" id="createBookingevent">
+  <div id="createBookingevent">
 Create a new event from
 <create-event @ondonebuttonclicked="alertValue"> </create-event>
 <span> Start date</span>
@@ -21,7 +22,7 @@ Create a new event from
 </template>
 
 <script>
-window.jQuery = window.$ = require('jquery')
+import $ from "jquery";
 
 var path = require("path");
 import moment from "moment";
@@ -30,6 +31,7 @@ import CreateEvent from "./CreateEvent";
 
 export default {
   name: "RoomCalendar",
+
   components: { CreateEvent },
   props: {
     editable: {
@@ -46,8 +48,6 @@ export default {
   },
   data() {
     return {
-       showbooking:false,
-       selected:{},
       msg: "Welcome to Calendar",
       events: [
         {
@@ -75,31 +75,13 @@ export default {
         }
       ],
       config: {
-         weekends: false, // will hide Saturdays and Sundays
-      defaultView:"month",
-      lang: "en", 
-      height: "auto",
-      width: "100%",
-      allDaySlot: false,
-      slotEventOverlap: false,
-      timeFormat: "HH:mm",
-       header: {
-        left: "prev,next today",
-        center: "title",
-        right: "month,agendaWeek,agendaDay"
-      },
-       /*  eventClick: (event) => {
+        eventClick: event => {
           this.selected = event;
-        },*/
+        }
       }
     };
   },
   methods: {
-    dayclick(date, jsEvent, view)
-    {
-      this.showbooking=!this.showbooking;
-      alert (date);
-    },
     formateddate(item)
     {
       return 'Booked from '+ moment(item.start).format("DD MMM")+ ' from '+moment(item.start).format("hh:mm")+ ' to '+ moment(item.end).format("hh:mm");
@@ -127,22 +109,27 @@ export default {
     }
   },
   mounted: function() {
+    $("#calendar").fullCalendar({
+      weekends: false, // will hide Saturdays and Sundays
 
-    /*self.cal = $(self.$el);
-    var args = {
-      lang: 'en',
+      lang: "en",
       header: {
-        left:   'prev,next today',
-        center: 'title',
-        right:  'month,agendaWeek,agendaDay'
+        left: "prev,next today",
+        center: "title",
+        right: "month,agendaWeek,agendaDay"
       },
       height: "auto",
+      width: "100%",
       allDaySlot: false,
       slotEventOverlap: false,
-      timeFormat: 'HH:mm',
-    }*/
-  
-  // self.cal.fullCalendar(args);
+      timeFormat: "HH:mm",
+      events: this.events,
+     dayClick: function(date, jsEvent, view) {
+     alert('Clicked on: ' + date.format());
+     //this.alertValue(date.format());
+     this.$emit("testevent","hello");
+     }
+    });
   },
   computed: {
     eventSources() {

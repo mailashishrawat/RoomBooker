@@ -63,7 +63,7 @@ export default {
       
       console.log(this.newEvent.newEndTime);
       console.log(this.newEvent.newStartTime.hh);
-      this.$emit('ondonebuttonclicked',this.newEvent.newStartTime.hh);
+      this.$emit('ondonebuttonclicked',this.newEvent);
       alert(this.newEvent.newStartTime.hh);
     },
     onalldayclick(event) {
