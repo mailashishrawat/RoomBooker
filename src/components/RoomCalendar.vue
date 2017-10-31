@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <h1>{{ selected }}</h1>
   <full-calendar id='calendar' @day-click="dayclick" @testevent="alertValue" ref="calendar" :events="events" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"  :defaultView="config.defaultView"></full-calendar>
   <div id="sidepane">
     Second pane
@@ -11,7 +10,7 @@
       </ul>
 
   <div  id="createBookingevent">   
-<create-event @ondonebuttonclicked="alertValue"  :dateclicked="dateclicked"> </create-event>
+<create-event ref="newevent" @ondonebuttonclicked="addnewevent"  :dateclicked="dateclicked"> </create-event>
 
   </div>
   </div>
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-window.jQuery = window.$ = require('jquery')
+window.jQuery = window.$ = require("jquery");
 
 var path = require("path");
 import moment from "moment";
@@ -44,9 +43,9 @@ export default {
   },
   data() {
     return {
-       showbooking:false,
-       selected:{},
-       dateclicked:moment(),
+      showbooking: false,
+ 
+      dateclicked: moment(),
       msg: "Welcome to Calendar",
       events: [
         {
@@ -74,60 +73,93 @@ export default {
         }
       ],
       config: {
-         weekends: false, // will hide Saturdays and Sundays
-      defaultView:"month",
-      lang: "en", 
-      height: "auto",
-      width: "100%",
-      allDaySlot: false,
-      slotEventOverlap: false,
-      timeFormat: "HH:mm",
-       header: {
-        left: "prev,next today",
-        center: "title",
-        right: "month,agendaWeek,agendaDay"
-      },
-       /*  eventClick: (event) => {
+        weekends: false, // will hide Saturdays and Sundays
+        defaultView: "month",
+        lang: "en",
+        height: "auto",
+        width: "100%",
+        allDaySlot: false,
+        slotEventOverlap: false,
+        timeFormat: "HH:mm",
+        header: {
+          left: "prev,next today",
+          center: "title",
+          right: "month,agendaWeek,agendaDay"
+        }
+        /*  eventClick: (event) => {
           this.selected = event;
         },*/
       }
     };
   },
   methods: {
-    dayclick(date, jsEvent, view)
-    {
-      this.showbooking=!this.showbooking;
-      this.dateclicked=date;
-     alert(this.dateclicked);
+    dayclick(date, jsEvent, view) {
+      this.showbooking = !this.showbooking;
+      this.dateclicked = date;
+
     },
-    formateddate(item)
-    {
-      return 'Booked from '+ moment(item.start).format("DD MMM")+ ' from '+moment(item.start).format("hh:mm")+ ' to '+ moment(item.end).format("hh:mm");
+    formateddate(item) {
+      return (
+        "Booked on " +
+        moment(item.start).format("DD MMM") +
+        " from " +
+        moment(item.start).format("hh:mm") +
+        " to " +
+        moment(item.end).format("hh:mm")
+      );
       //return `$item.start to $item.end.format("hh:mm:")`;
     },
     refreshEvents() {
       this.$refs.calendar.$emit("refetch-events");
     },
-
+    addnewevent(value) {
+      debugger;
+     var childcreate= this.$refs.newevent;
+      var temp = {
+        id: this.events.length + 1,
+        title: value.title,
+        start: moment(
+          value.selecteddate +
+            " " +
+            value.newStartTime.hh +
+            ":" +
+            value.newStartTime.mm +
+            " " +
+            value.newStartTime.A
+        ),
+        end: moment(
+          value.selecteddate +
+            " " +
+            value.newEndTime.hh +
+            ":" +
+            value.newEndTime.mm +
+            " " +
+            value.newEndTime.A
+        ),
+        allDay: value.allDay
+      };
+  
+      this.events.push(temp);
+    },
     removeEvent() {
       this.$refs.calendar.$emit("remove-event", this.selected);
-      this.selected = {};
+
     },
 
-    eventSelected(event) {
-      this.selected = event;
+    eventSelected(event,jsEvent, view) {
+   //   this.selected = event;
+alert("hi");
     },
 
     eventCreated(...test) {
       console.log(test);
     },
-    alertValue(value)
-    {alert("on parent : "+value);
-
+    alertValue(value) {
+      alert("on parent : " + value);
     }
   },
   mounted: function() {
-
+    
     /*self.cal = $(self.$el);
     var args = {
       lang: 'en',
@@ -141,8 +173,7 @@ export default {
       slotEventOverlap: false,
       timeFormat: 'HH:mm',
     }*/
-  
-  // self.cal.fullCalendar(args);
+    // self.cal.fullCalendar(args);
   },
   computed: {
     eventSources() {
@@ -159,6 +190,7 @@ export default {
     }
   }
 };
+//# sourceURL=settings.vue
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -172,21 +204,21 @@ h2 {
   width: 35%;
   float: right;
   height: 80vh;
-overflow: auto;
-  border:solid;
-  border-color: royalblue
+  overflow: auto;
+  border: solid;
+  border-color: royalblue;
 }
 #calendar {
   width: 63%;
-  height:80vh;
-  float:left;
+  height: 80vh;
+  float: left;
 }
 ul {
   list-style-type: none;
   padding: 0;
 }
 
-li{
+li {
   margin-left: 0;
   padding: 10px;
 }
@@ -194,10 +226,9 @@ li{
 a {
   color: #42b983;
 }
-div{
-  background-color: lightblue; 
+div {
+  background-color: lightblue;
   height: 100%;
   width: 100%;
-
 }
 </style>

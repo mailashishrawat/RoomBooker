@@ -4,12 +4,12 @@
   <div class="container">
     <label>Reason</label>
     <textarea placeholder="Enter booking details" name="desc"  v-model="newEvent.title"></textarea><br>
-    All Day <input  v-on:click="onalldayclick" type="checkbox" v-model="newEvent.allday"> <br>
-    <label v-if="!newEvent.allday">From  </label>
-  <vue-timepicker v-if="!newEvent.allday" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newStartTime"></vue-timepicker><br>
-    <label v-if="!newEvent.allday"> To </label>
-    <vue-timepicker  v-if="!newEvent.allday" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newEndTime"></vue-timepicker><br>
-    <button  v-on:click="greet" type="submit">Book Room</button>
+    All Day <input  v-on:click="onalldayclick" type="checkbox" v-model="newEvent.allDay"> <br>
+    <label v-if="!newEvent.allDay">From  </label>
+  <vue-timepicker v-if="!newEvent.allDay" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newStartTime"></vue-timepicker><br>
+    <label v-if="!newEvent.allDay"> To </label>
+    <vue-timepicker  v-if="!newEvent.allDay" :format="config.timeformat" :minute-interval="config.leastcount" v-model="newEvent.newEndTime"></vue-timepicker><br>
+    <button  v-on:click="createnewevent" type="submit">Book Room</button>
   </div>
   </div>
 </template>
@@ -28,11 +28,13 @@ export default {
         timeformat: "hh:mm A",
         leastcount: 15
       },
-     
+
       newEvent: {
         title: "new Booking",
-        allday: false,
+        allDay: false,
+        selecteddate: this.dateclickedformatted,
         newStartTime: {
+         
           hh: moment().format("hh"),
           mm: moment().format("mm") - moment().format("mm") % 15,
           A: moment().format("A")
@@ -51,24 +53,17 @@ export default {
       }
     };
   },
-    props: ['dateclicked'],
-  computed:{ 
-dateclickedformatted:function()
-{
-  return new moment(this.dateclicked).format("DD:MMM");
-}
+  props: ["dateclicked"],
+  computed: {
+    dateclickedformatted: function() {
+      return new moment(this.dateclicked).format("DD MMM YYYY");
+    }
   },
   methods: {
-    getCurrentFormattedDate() {
-      var currentDate = moment().format("mm");
-      currentDate.split();
-    },
     createnewevent: function() {
-      
-      console.log(this.newEvent.newEndTime);
-      console.log(this.newEvent.newStartTime.hh);
-      this.$emit('ondonebuttonclicked',this.newEvent);
-      alert(this.newEvent.newStartTime.hh);
+
+      this.newEvent.selecteddate=this.dateclickedformatted;
+this.$emit("ondonebuttonclicked", this.newEvent);
     },
     onalldayclick(event) {
       console.log(event.data);
@@ -83,6 +78,7 @@ dateclickedformatted:function()
     }
   }
 };
+//# sourceURL=settings.vue
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

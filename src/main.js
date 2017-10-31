@@ -11,7 +11,7 @@ Vue.use(FullCalendar);
 //Vue.use(RoomCalendar);
 
 /* eslint-disable no-new */
-new Vue({
+var root=new Vue({
   el: '#app',
   router,
   template: '<App/>',
