@@ -6,21 +6,23 @@
 
           <div class="modal-header">
             <slot name="header">
-              default header
+           {{defaultHeaderText}}
             </slot>
           </div>
 
           <div class="modal-body">
             <slot name="body">
-              default body
+              {{eventBody}}
             </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button class="modal-default-button" @click="$emit('close')">
-                OK
+              Ok
+              </button>
+              <button class="modal-default-button" @click="$emit('cancel')">
+                Wanna Cancel ?
               </button>
             </slot>
           </div>
@@ -31,11 +33,31 @@
   </template>
 
   <script>
+  import moment from 'moment';
 export default {
-  name: "cancelevent",
+  name: "cancel-dialog",
   data() {
-    return {};
-  }
+    return {
+      defaultHeaderText: "Event details "
+    };
+  },
+  props:
+  ['eventData'],
+   
+  methods:{
+    defaultHeaderText1()
+    {
+      return " Event details "
+    }
+  } ,
+  computed:{
+  eventBody:function(){
+     
+    if(this.eventData.allDay==true)
+    return 'Lab is booked for '+this.eventData.title+' on ' + moment(this.eventData.start).format("DD MMM")+' for whole day ';
+    else
+    return 'Lab is booked for '+ this.eventData.title+' on '+ moment(this.eventData.start).format("DD MMM")+' from ' + moment(this.eventData.start).format("hh mm A")+' to ' + moment(this.eventData.end).format("hh mm A") ;
+  }}
 };
 </script>
 

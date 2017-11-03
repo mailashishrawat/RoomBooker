@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <cancel-dialog ref="canceldialog" v-if="showModal" @cancel="removeEvent" @close="showModal = false" :eventData=selectedevent> Show Modal </cancel-dialog>
   <full-calendar id='calendar' @day-click="dayclick" @testevent="alertValue" ref="calendar" :events="events" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"  :defaultView="config.defaultView"></full-calendar>
   <div id="sidepane">
     Second pane
@@ -8,7 +9,6 @@
       {{ item.title }} :  {{ formateddate(item)}}
     </li>
       </ul>
-
   <div  id="createBookingevent">   
 <create-event ref="newevent" @ondonebuttonclicked="addnewevent"  :dateclicked="dateclicked"> </create-event>
 
@@ -23,11 +23,12 @@ window.jQuery = window.$ = require("jquery");
 var path = require("path");
 import moment from "moment";
 import fullCalendar from "fullcalendar/dist/fullcalendar.js";
+import CancelDialog from "./CancelDialog";
 import CreateEvent from "./CreateEvent";
 
 export default {
   name: "RoomCalendar",
-  components: { CreateEvent },
+  components: { CreateEvent, CancelDialog },
   props: {
     editable: {
       type: Boolean,
@@ -44,9 +45,10 @@ export default {
   data() {
     return {
       showbooking: false,
- 
+      showModal: false,
       dateclicked: moment(),
       msg: "Welcome to Calendar",
+      selectedevent:"",
       events: [
         {
           id: 1,
@@ -96,8 +98,9 @@ export default {
     dayclick(date, jsEvent, view) {
       this.showbooking = !this.showbooking;
       this.dateclicked = date;
-
     },
+    cancelevent()
+    {this.events.re},
     formateddate(item) {
       return (
         "Booked on " +
@@ -114,7 +117,7 @@ export default {
     },
     addnewevent(value) {
       debugger;
-     var childcreate= this.$refs.newevent;
+      var childcreate = this.$refs.newevent;
       var temp = {
         id: this.events.length + 1,
         title: value.title,
@@ -138,17 +141,20 @@ export default {
         ),
         allDay: value.allDay
       };
-  
+
       this.events.push(temp);
     },
     removeEvent() {
-      this.$refs.calendar.$emit("remove-event", this.selected);
-
+      this.events.splice(this.selectedevent.id-1,1);
+      this.showModal = false;
+      
     },
 
-    eventSelected(event,jsEvent, view) {
-   //   this.selected = event;
-alert("hi");
+    eventSelected(event, jsEvent, view) {
+      //   this.selected = event;
+    
+      this.selectedevent=event;
+      this.showModal = true;
     },
 
     eventCreated(...test) {
@@ -159,7 +165,6 @@ alert("hi");
     }
   },
   mounted: function() {
-    
     /*self.cal = $(self.$el);
     var args = {
       lang: 'en',
