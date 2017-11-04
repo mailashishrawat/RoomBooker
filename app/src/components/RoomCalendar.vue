@@ -116,7 +116,7 @@ export default {
       this.$refs.calendar.$emit("refetch-events");
     },
     addnewevent(value) {
-      debugger;
+    
       var childcreate = this.$refs.newevent;
       var temp = {
         id: this.events.length + 1,
