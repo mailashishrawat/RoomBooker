@@ -19,7 +19,7 @@
 
 <script>
 window.jQuery = window.$ = require("jquery");
-
+var axios=require("axios");
 var path = require("path");
 import moment from "moment";
 import fullCalendar from "fullcalendar/dist/fullcalendar.js";
@@ -116,7 +116,7 @@ export default {
       this.$refs.calendar.$emit("refetch-events");
     },
     addnewevent(value) {
-      debugger;
+    
       var childcreate = this.$refs.newevent;
       var temp = {
         id: this.events.length + 1,
@@ -141,6 +141,16 @@ export default {
         ),
         allDay: value.allDay
       };
+//post request to server 
+axios.post('/Events',
+  temp
+).then(function(res){
+  console.log(res);
+}).catch(function(err)
+{
+  console.log(err);
+})
+;
 
       this.events.push(temp);
     },
