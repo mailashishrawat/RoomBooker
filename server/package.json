@@ -13,13 +13,19 @@
   "author": "mailashishrawat@gmail.com",
   "license": "MIT",
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^0.17.0",
+=======
+>>>>>>> 1abda33d06d35df0ab29103ff1719bcc4f290171
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-ws": "^3.0.0",
+<<<<<<< HEAD
     "moment": "^2.19.1",
     "mongodb": "^2.2.33",
+=======
+>>>>>>> 1abda33d06d35df0ab29103ff1719bcc4f290171
     "path": "^0.12.7"
   }
 }
