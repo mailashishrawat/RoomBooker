@@ -1,5 +1,6 @@
 # RoomBooker 
 This is full fledged project for event booking in calendar.
+
 The product architecutre uses client(vuejs),server(node)and database(mongodb).
 Please go through the installation of mondodb before you want to see the sample working.
 Mongodb installation:
